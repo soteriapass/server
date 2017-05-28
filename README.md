@@ -1,4 +1,4 @@
-# pswmgr
+# soteria pass server
 Password Manager that uses a client/server architecture to store encrypted passwords remotely
 
 ## Dependencies
