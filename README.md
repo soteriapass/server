@@ -1,5 +1,5 @@
-# soteria pass server
-Password Manager that uses a client/server architecture to store encrypted passwords remotely
+# Soteria Pass Server
+Password Manager that uses a client/server architecture to store encrypted passwords remotely. This portion is the backend server
 
 ## Dependencies
 * [gRpc](http://www.grpc.io/)
