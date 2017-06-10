@@ -27,6 +27,7 @@ void signal_callback_handler(int signum)
 int main(int argc, char** argv)
 {
     signal(SIGINT, signal_callback_handler);
+    signal(SIGSEGV, signal_callback_handler);
 
     if(argc > 1 && strcmp(argv[1], "-v") == 0)
     {
