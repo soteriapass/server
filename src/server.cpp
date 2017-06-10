@@ -96,6 +96,11 @@ grpc::Status PasswordManagerServer::Authenticate(grpc::ServerContext* context, c
     return grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "Invalid username or password");
 }
 
+grpc::Status PasswordManagerServer::ValidateToken(grpc::ServerContext* context, const pswmgr::AuthenticateTokenRequest* request, pswmgr::TokenAuthReply* response)
+{
+    return grpc::Status::OK;
+}
+
 grpc::Status PasswordManagerServer::ListPasswords(grpc::ServerContext* context, const pswmgr::SimpleRequest* request, pswmgr::PasswordList* response)
 {
     logging::log("PasswordManagerServer::ListPasswords", true);

@@ -36,6 +36,7 @@ private:
 private:
     //Authentication Service
     grpc::Status Authenticate(grpc::ServerContext* context, const pswmgr::AuthenticationRequest* request, pswmgr::AuthReply* response) override;
+    grpc::Status ValidateToken(grpc::ServerContext* context, const pswmgr::AuthenticateTokenRequest* request, pswmgr::TokenAuthReply* response) override;
 
     //Password Service
     grpc::Status ListPasswords(grpc::ServerContext* context, const pswmgr::SimpleRequest* request, pswmgr::PasswordList* response) override;
