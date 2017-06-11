@@ -99,7 +99,11 @@ grpc::Status PasswordManagerServer::Authenticate(grpc::ServerContext* context, c
 grpc::Status PasswordManagerServer::ValidateToken(grpc::ServerContext* context, const pswmgr::AuthenticateTokenRequest* request, pswmgr::TokenAuthReply* response)
 {
     const std::string& token = request->token();
-    response->set_success(m_AuthTokens.find(token) != m_AuthTokens.end());
+    if(m_AuthTokens.find(token) != m_AuthTokens.end())
+    {
+        response->set_success(true);
+        response->set_username(m_AuthTokens[token]->username);
+    }
     return grpc::Status::OK;
 }
 
