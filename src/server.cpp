@@ -98,12 +98,15 @@ grpc::Status PasswordManagerServer::Authenticate(grpc::ServerContext* context, c
 
 grpc::Status PasswordManagerServer::ValidateToken(grpc::ServerContext* context, const pswmgr::AuthenticateTokenRequest* request, pswmgr::TokenAuthReply* response)
 {
+    const std::string& token = request->token();
+    response->set_success(m_AuthTokens.find(token) != m_AuthTokens.end());
     return grpc::Status::OK;
 }
 
 grpc::Status PasswordManagerServer::ListPasswords(grpc::ServerContext* context, const pswmgr::SimpleRequest* request, pswmgr::PasswordList* response)
 {
     logging::log("PasswordManagerServer::ListPasswords", true);
+
     if(context == nullptr || !context->auth_context()->IsPeerAuthenticated())
     {
         return grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "");
@@ -115,6 +118,11 @@ grpc::Status PasswordManagerServer::ListPasswords(grpc::ServerContext* context, 
         return grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "Didn't find x-custom-auth-ticket in the call credentials");
     }
     std::string peerName = { (*propertyValues.begin()).data() };
+
+    if(m_AuthTokens.find(peerName) == m_AuthTokens.end())
+    {
+        return grpc::Status(grpc::StatusCode::UNAUTHENTICATED, "");
+    }
 
     auto authTokenInfo = m_AuthTokens[peerName];
     int userId = m_Database->GetUserId(authTokenInfo->username);
