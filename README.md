@@ -1,5 +1,3 @@
-# Soteria Pass Server
-Password Manager that uses a client/server architecture to store encrypted passwords remotely. This portion is the backend server
 
 ## Dependencies
 * [gRpc](http://www.grpc.io/)
@@ -26,6 +24,7 @@ The first part is to build from sources
 
 ```sh
  $ git clone https://github.com/soteriapass/server
+ $ git submodule update --init --recursive
  $ cd src/
  $ make
  $ [sudo] make install
@@ -47,7 +46,8 @@ After this, we will need to configure the server. We will need to generate encry
 This step is optional, but it does allow you to configure the default values for the certificate creation to ensure that they are consistent.
 
 ```sh
- $ vim ./vars
+ $ cp ./easyrsa3/vars.example ./easyrsa3/vars
+ $ vim ./easyrsa3/vars
 ```
 
 We want to modify all of the "KEY\_" variables, which should be located at the bottom of the file. The variables names are easy enough to understand. Once the "vars" are all completed, you should have something resembling this:
@@ -63,6 +63,14 @@ export KEY_NAME=server
 export KEY_OU=server
 ```
 
+#### Easy-RSA basic setup
+
+```sh
+ $ cd ./easyrsa3
+ $ ./easyrsa init-pki
+ $ ./easyrsa build-ca
+```
+
 #### Certificate Authority setup
 We can now build our certificate authority (CA for short), based on the information provided in the vars file
 
@@ -71,32 +79,6 @@ We can now build our certificate authority (CA for short), based on the informat
  $ ./clean-all
  $ ./build-ca
 ```
-
-#### Create the certificate
-
-```sh
- $ ./build-key-server server
- $ ./build-dh
-```
-
-#### Create the keys for the different services
-
-```sh
- $ ./build-key user_server
-```
-
-#### Copy everything to a common directory
-
-```sh
- $ [sudo] mkdir /etc/pswmgr/
- $ [sudo] mkdir /etc/pswmgr/keys/
- $ cd keys/
- $ [sudo] cp ca.crt server.crt server.key user_server.crt user_server.key ca.crt /etc/pswmgr/keys
-```
-
-#### Generate encryption keys
-
-TO COMPLETE
 
 ## Supported platforms
 
